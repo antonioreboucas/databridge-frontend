@@ -1,0 +1,14 @@
+# Sob o servidor embutido do PHP (php -S) a variável DATABRIDGE_API_URL é
+# passada via $env: no PowerShell antes de subir o servidor. O Apache do
+# XAMPP não herda essas variáveis de shell, então ela precisa ser definida
+# aqui para o backend ser encontrado. Backend em produção no Render — pra
+# testar contra o backend local (porta 8010) em vez do Render, troque o
+# valor abaixo temporariamente.
+<IfModule mod_env.c>
+    SetEnv DATABRIDGE_API_URL "https://api-databridge.onrender.com"
+</IfModule>
+
+# DATABRIDGE_BASE_URL NÃO precisa ser definida aqui: o frontend detecta
+# sozinho o subdiretório em que foi colocado (ex.: /databridge quando esta
+# pasta é copiada para htdocs/databridge), então os links funcionam tanto
+# na raiz quanto em qualquer subpasta do htdocs.
