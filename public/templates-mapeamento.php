@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (in_array($acao, ['criar', 'atualizar'], true) && !$podeGerenciar) {
         set_flash('error', 'Você não tem permissão para gerenciar templates.');
-        header('Location: ' . BASEURL . '/templates-mapeamento.php');
+        header('Location: ' . BASEURL . '/templates-mapeamento');
         exit;
     }
 
@@ -113,10 +113,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $resp = api_post('/api/templates', $payload);
             if ($resp['ok']) {
                 set_flash('success', "Template \"{$payload['nome']}\" criado com sucesso.");
-                header('Location: ' . BASEURL . '/templates-mapeamento.php');
+                header('Location: ' . BASEURL . '/templates-mapeamento');
             } else {
                 set_flash('error', api_error_message($resp));
-                header('Location: ' . BASEURL . '/templates-mapeamento.php?form=novo');
+                header('Location: ' . BASEURL . '/templates-mapeamento?form=novo');
             }
             exit;
         }
@@ -125,10 +125,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $resp = api_put("/api/templates/{$id}", $payload);
         if ($resp['ok']) {
             set_flash('success', "Template \"{$payload['nome']}\" atualizado com sucesso.");
-            header('Location: ' . BASEURL . '/templates-mapeamento.php');
+            header('Location: ' . BASEURL . '/templates-mapeamento');
         } else {
             set_flash('error', api_error_message($resp));
-            header('Location: ' . BASEURL . "/templates-mapeamento.php?editar={$id}");
+            header('Location: ' . BASEURL . "/templates-mapeamento?editar={$id}");
         }
         exit;
     }
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($acao === 'deletar') {
         if (!$podeGerenciar) {
             set_flash('error', 'Você não tem permissão para gerenciar templates.');
-            header('Location: ' . BASEURL . '/templates-mapeamento.php');
+            header('Location: ' . BASEURL . '/templates-mapeamento');
             exit;
         }
         $id = (int) ($_POST['id'] ?? 0);
@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             set_flash('error', api_error_message($resp));
         }
-        header('Location: ' . BASEURL . '/templates-mapeamento.php');
+        header('Location: ' . BASEURL . '/templates-mapeamento');
         exit;
     }
 }
@@ -158,7 +158,7 @@ $templateEdicao = null;
 if (isset($_GET['form']) || isset($_GET['editar'])) {
     if (!$podeGerenciar) {
         set_flash('error', 'Você não tem permissão para gerenciar templates.');
-        header('Location: ' . BASEURL . '/templates-mapeamento.php');
+        header('Location: ' . BASEURL . '/templates-mapeamento');
         exit;
     }
 }
@@ -173,7 +173,7 @@ if (isset($_GET['form']) && $_GET['form'] === 'novo') {
         $templateEdicao = $resp['body'];
     } else {
         set_flash('error', api_error_message($resp));
-        header('Location: ' . BASEURL . '/templates-mapeamento.php');
+        header('Location: ' . BASEURL . '/templates-mapeamento');
         exit;
     }
 }
@@ -197,7 +197,7 @@ if ($modoFormulario !== null) {
         <p>Modelos reutilizáveis de mapeamento coluna a coluna (CSV → tabela de destino).</p>
     </div>
     <?php if ($modoFormulario === null && $podeGerenciar): ?>
-        <a class="btn btn-primary" href="<?= BASEURL ?>/templates-mapeamento.php?form=novo"><?= icon('plus', 'icon icon-sm') ?> Novo template</a>
+        <a class="btn btn-primary" href="<?= BASEURL ?>/templates-mapeamento?form=novo"><?= icon('plus', 'icon icon-sm') ?> Novo template</a>
     <?php endif; ?>
 </div>
 
@@ -214,7 +214,7 @@ if ($modoFormulario !== null) {
     <div class="card" style="max-width:640px;">
         <h2 style="margin-bottom:4px;"><?= $ehEdicao ? 'Editar template' : 'Novo template' ?></h2>
         <p class="text-muted" style="margin-bottom:16px;">Mapeie as colunas do seu CSV para os campos da tabela PostgreSQL.</p>
-        <form method="post" action="<?= BASEURL ?>/templates-mapeamento.php" id="form-template">
+        <form method="post" action="<?= BASEURL ?>/templates-mapeamento" id="form-template">
             <input type="hidden" name="_acao" value="<?= $ehEdicao ? 'atualizar' : 'criar' ?>">
             <?php if ($ehEdicao): ?>
                 <input type="hidden" name="id" value="<?= (int) $valores['id'] ?>">
@@ -307,7 +307,7 @@ if ($modoFormulario !== null) {
 
             <div style="display:flex; gap:8px; margin-top:16px;">
                 <button type="submit" class="btn btn-primary"><?= $ehEdicao ? 'Salvar alterações' : 'Salvar template' ?></button>
-                <a class="btn btn-secondary" href="<?= BASEURL ?>/templates-mapeamento.php">Cancelar</a>
+                <a class="btn btn-secondary" href="<?= BASEURL ?>/templates-mapeamento">Cancelar</a>
             </div>
         </form>
     </div>
@@ -328,8 +328,8 @@ if ($modoFormulario !== null) {
             <div class="item-card__meta"><?= count($t['mapeamento_colunas']) ?> coluna(s) mapeada(s) · schema <?= htmlspecialchars($t['schema_destino']) ?></div>
             <?php if ($podeGerenciar): ?>
                 <div class="item-card__footer">
-                    <a class="btn btn-secondary btn-sm" href="<?= BASEURL ?>/templates-mapeamento.php?editar=<?= (int) $t['id'] ?>"><?= icon('edit', 'icon icon-sm') ?> Editar</a>
-                    <form method="post" action="<?= BASEURL ?>/templates-mapeamento.php" onsubmit="return confirm('Remover o template \'<?= htmlspecialchars($t['nome'], ENT_QUOTES) ?>\'?');">
+                    <a class="btn btn-secondary btn-sm" href="<?= BASEURL ?>/templates-mapeamento?editar=<?= (int) $t['id'] ?>"><?= icon('edit', 'icon icon-sm') ?> Editar</a>
+                    <form method="post" action="<?= BASEURL ?>/templates-mapeamento" onsubmit="return confirm('Remover o template \'<?= htmlspecialchars($t['nome'], ENT_QUOTES) ?>\'?');">
                         <input type="hidden" name="_acao" value="deletar">
                         <input type="hidden" name="id" value="<?= (int) $t['id'] ?>">
                         <button type="submit" class="icon-btn danger" title="Remover"><?= icon('trash') ?></button>
@@ -340,7 +340,7 @@ if ($modoFormulario !== null) {
     <?php endforeach; ?>
 
     <?php if ($modoFormulario === null && $podeGerenciar): ?>
-        <a class="item-card-add" href="<?= BASEURL ?>/templates-mapeamento.php?form=novo">
+        <a class="item-card-add" href="<?= BASEURL ?>/templates-mapeamento?form=novo">
             <?= icon('plus') ?>
             Criar novo template
         </a>

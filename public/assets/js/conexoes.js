@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.textContent = 'Testando…';
         resultado.innerHTML = '';
 
-        fetch((window.DATABRIDGE_BASE_URL || '') + '/conexoes.php?ajax=testar', {
+        fetch((window.DATABRIDGE_BASE_URL || '') + '/conexoes?ajax=testar', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),

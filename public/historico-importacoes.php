@@ -58,10 +58,10 @@ function manter_filtros(array $extra = []): string
 
 <?php if ($pastaIdFiltro): ?>
     <div class="breadcrumbs">
-        <a href="<?= BASEURL ?>/pastas-monitoradas.php">Pastas Monitoradas</a>
+        <a href="<?= BASEURL ?>/pastas-monitoradas">Pastas Monitoradas</a>
         <span>/</span>
         <span>Logs da pasta #<?= $pastaIdFiltro ?></span>
-        <a href="<?= BASEURL ?>/historico-importacoes.php" style="margin-left:auto;">Ver histórico completo</a>
+        <a href="<?= BASEURL ?>/historico-importacoes" style="margin-left:auto;">Ver histórico completo</a>
     </div>
 <?php endif; ?>
 
@@ -69,7 +69,7 @@ function manter_filtros(array $extra = []): string
     <div class="alert alert-error">Não foi possível conectar à API do backend: <?= htmlspecialchars(api_error_message($resp)) ?></div>
 <?php endif; ?>
 
-<form method="get" action="<?= BASEURL ?>/historico-importacoes.php" class="filter-bar">
+<form method="get" action="<?= BASEURL ?>/historico-importacoes" class="filter-bar">
     <div class="form-group">
         <label for="f-status">Status</label>
         <select id="f-status" name="status">
@@ -94,7 +94,7 @@ function manter_filtros(array $extra = []): string
     </div>
     <button type="submit" class="btn btn-primary"><?= icon('filter', 'icon icon-sm') ?> Filtrar</button>
     <?php if ($statusFiltro || $tabelaFiltro || $periodoFiltro): ?>
-        <a class="btn btn-secondary" href="<?= BASEURL ?>/historico-importacoes.php">Limpar</a>
+        <a class="btn btn-secondary" href="<?= BASEURL ?>/historico-importacoes">Limpar</a>
     <?php endif; ?>
 </form>
 
@@ -162,12 +162,12 @@ function manter_filtros(array $extra = []): string
             <span>Mostrando <?= count($itens) ?> de <?= $total ?> importações</span>
             <div style="display:flex; gap:8px;">
                 <?php if ($pagina > 1): ?>
-                    <a class="btn btn-secondary btn-sm" href="<?= BASEURL ?>/historico-importacoes.php?<?= manter_filtros(['pagina' => $pagina - 1]) ?>">Anterior</a>
+                    <a class="btn btn-secondary btn-sm" href="<?= BASEURL ?>/historico-importacoes?<?= manter_filtros(['pagina' => $pagina - 1]) ?>">Anterior</a>
                 <?php else: ?>
                     <button type="button" class="btn btn-secondary btn-sm" disabled>Anterior</button>
                 <?php endif; ?>
                 <?php if ($pagina * $tamanhoPagina < $total): ?>
-                    <a class="btn btn-secondary btn-sm" href="<?= BASEURL ?>/historico-importacoes.php?<?= manter_filtros(['pagina' => $pagina + 1]) ?>">Próximo</a>
+                    <a class="btn btn-secondary btn-sm" href="<?= BASEURL ?>/historico-importacoes?<?= manter_filtros(['pagina' => $pagina + 1]) ?>">Próximo</a>
                 <?php else: ?>
                     <button type="button" class="btn btn-secondary btn-sm" disabled>Próximo</button>
                 <?php endif; ?>

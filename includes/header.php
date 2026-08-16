@@ -65,14 +65,14 @@ $iniciais = mb_substr($iniciais, 0, 2);
         </div>
         <nav class="sidebar__nav">
             <?php foreach ($navItems as $file => $item): ?>
-                <a class="sidebar__link<?= $currentPage === $file ? ' is-active' : '' ?>" href="<?= BASEURL ?>/<?= $file ?>">
+                <a class="sidebar__link<?= $currentPage === $file ? ' is-active' : '' ?>" href="<?= BASEURL ?>/<?= substr($file, 0, -4) ?>">
                     <?= icon($item['icon'], 'icon icon-sm') ?>
                     <span><?= htmlspecialchars($item['label']) ?></span>
                 </a>
             <?php endforeach; ?>
         </nav>
         <div class="sidebar__footer">
-            <a class="btn btn-primary btn-block" href="<?= BASEURL ?>/upload.php">
+            <a class="btn btn-primary btn-block" href="<?= BASEURL ?>/upload">
                 <?= icon('plus', 'icon icon-sm') ?>
                 Nova importação
             </a>
@@ -95,7 +95,7 @@ $iniciais = mb_substr($iniciais, 0, 2);
                         <div class="topbar__user-name"><?= htmlspecialchars($usuarioLogado['nome']) ?></div>
                         <span class="role-badge role-<?= htmlspecialchars($usuarioLogado['papel']) ?>"><?= htmlspecialchars(papel_label($usuarioLogado['papel'])) ?></span>
                     </div>
-                    <a class="topbar__logout" href="<?= BASEURL ?>/logout.php" title="Sair"><?= icon('logout', 'icon icon-sm') ?></a>
+                    <a class="topbar__logout" href="<?= BASEURL ?>/logout" title="Sair"><?= icon('logout', 'icon icon-sm') ?></a>
                 </div>
             </div>
         </header>

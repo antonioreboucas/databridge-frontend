@@ -5,7 +5,7 @@ require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/icons.php';
 
 if (is_logged_in()) {
-    header('Location: ' . BASEURL . '/dashboard.php');
+    header('Location: ' . BASEURL . '/dashboard');
     exit;
 }
 
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $resp = do_login($email, $senha, $lembrar);
     if ($resp['ok']) {
-        header('Location: ' . BASEURL . '/dashboard.php');
+        header('Location: ' . BASEURL . '/dashboard');
         exit;
     }
     $erro = api_error_message($resp);
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             <?php endif; ?>
 
-            <form method="post" action="<?= BASEURL ?>/login.php" id="form-login">
+            <form method="post" action="<?= BASEURL ?>/login" id="form-login">
                 <div class="form-group">
                     <label for="email">E-mail</label>
                     <input type="email" id="email" name="email" placeholder="nome@empresa.com" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required autofocus>

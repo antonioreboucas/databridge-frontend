@@ -73,7 +73,7 @@ if ($conexaoId) {
 <div class="card" style="max-width:420px; margin-bottom:20px;">
     <div class="form-group" style="margin-bottom:0;">
         <label for="conexao_id">Conexão de banco</label>
-        <form method="get" action="<?= BASEURL ?>/schemas.php">
+        <form method="get" action="<?= BASEURL ?>/schemas">
             <select id="conexao_id" name="conexao_id" onchange="this.form.submit()">
                 <option value="">Selecione uma conexão…</option>
                 <?php foreach ($conexoes as $c): ?>
@@ -97,7 +97,7 @@ if ($conexaoId) {
                     <p class="text-muted" style="font-size:13px;">Nenhum schema encontrado.</p>
                 <?php endif; ?>
                 <?php foreach ($schemas as $s): ?>
-                    <a class="schema-list__item<?= $schemaNome === $s ? ' is-active' : '' ?>" href="<?= BASEURL ?>/schemas.php?conexao_id=<?= $conexaoId ?>&schema=<?= rawurlencode($s) ?>">
+                    <a class="schema-list__item<?= $schemaNome === $s ? ' is-active' : '' ?>" href="<?= BASEURL ?>/schemas?conexao_id=<?= $conexaoId ?>&schema=<?= rawurlencode($s) ?>">
                         <span style="display:flex; align-items:center;"><?= icon('folder', 'icon icon-sm') ?><?= htmlspecialchars($s) ?></span>
                         <?php if ($contagemTabelasPorSchema[$s] !== null): ?>
                             <span class="count"><?= $contagemTabelasPorSchema[$s] ?></span>
@@ -127,7 +127,7 @@ if ($conexaoId) {
                         <?php else: ?>
                             <div class="card-grid-sm" id="grid-tabelas">
                                 <?php foreach ($tabelas as $t): ?>
-                                    <a class="table-card__link" data-nome-tabela="<?= htmlspecialchars(strtolower($t)) ?>" href="<?= BASEURL ?>/schemas.php?conexao_id=<?= $conexaoId ?>&schema=<?= rawurlencode($schemaNome) ?>&tabela=<?= rawurlencode($t) ?>">
+                                    <a class="table-card__link" data-nome-tabela="<?= htmlspecialchars(strtolower($t)) ?>" href="<?= BASEURL ?>/schemas?conexao_id=<?= $conexaoId ?>&schema=<?= rawurlencode($schemaNome) ?>&tabela=<?= rawurlencode($t) ?>">
                                         <div class="table-card<?= $tabelaNome === $t ? ' is-active' : '' ?>">
                                             <div class="table-card__icon"><?= icon('table') ?></div>
                                             <div class="table-card__name"><?= htmlspecialchars($t) ?></div>

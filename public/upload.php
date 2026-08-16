@@ -96,7 +96,7 @@ if ($conexaoId) {
     <div class="form-row">
         <div class="form-group" style="margin-bottom:0;">
             <label for="sel-conexao">Conexão de banco</label>
-            <form method="get" action="<?= BASEURL ?>/upload.php">
+            <form method="get" action="<?= BASEURL ?>/upload">
                 <select id="sel-conexao" name="conexao_id" onchange="this.form.submit()">
                     <option value="">Selecione…</option>
                     <?php foreach ($conexoes as $c): ?>
@@ -108,7 +108,7 @@ if ($conexaoId) {
         <?php if ($conexaoId && !$erro): ?>
         <div class="form-group" style="margin-bottom:0;">
             <label for="sel-schema">Schema</label>
-            <form method="get" action="<?= BASEURL ?>/upload.php">
+            <form method="get" action="<?= BASEURL ?>/upload">
                 <input type="hidden" name="conexao_id" value="<?= $conexaoId ?>">
                 <select id="sel-schema" name="schema" onchange="this.form.submit()">
                     <option value="">Selecione…</option>
@@ -122,7 +122,7 @@ if ($conexaoId) {
         <?php if ($conexaoId && $schemaNome && !$erro): ?>
         <div class="form-group" style="margin-bottom:0;">
             <label for="sel-tabela">Tabela destino</label>
-            <form method="get" action="<?= BASEURL ?>/upload.php">
+            <form method="get" action="<?= BASEURL ?>/upload">
                 <input type="hidden" name="conexao_id" value="<?= $conexaoId ?>">
                 <input type="hidden" name="schema" value="<?= htmlspecialchars($schemaNome) ?>">
                 <select id="sel-tabela" name="tabela" onchange="this.form.submit()">

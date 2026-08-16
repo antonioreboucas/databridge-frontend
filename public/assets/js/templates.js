@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function urlFrontend(caminho) {
-        return (window.DATABRIDGE_BASE_URL || '') + '/templates-mapeamento.php' + caminho;
+        return (window.DATABRIDGE_BASE_URL || '') + '/templates-mapeamento' + caminho;
     }
 
     // --- Modo "coluna de tabela existente" (select) vs "nova coluna" (nome + tipo) ---

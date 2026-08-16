@@ -4,5 +4,5 @@ require_once __DIR__ . '/../includes/api-client.php';
 require_once __DIR__ . '/../includes/auth.php';
 
 do_logout();
-header('Location: ' . BASEURL . '/login.php');
+header('Location: ' . BASEURL . '/login');
 exit;

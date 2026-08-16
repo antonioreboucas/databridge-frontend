@@ -20,10 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $resp = api_post('/api/usuarios', $payload);
         if ($resp['ok']) {
             set_flash('success', "Usuário \"{$payload['nome']}\" criado com sucesso.");
-            header('Location: ' . BASEURL . '/usuarios.php');
+            header('Location: ' . BASEURL . '/usuarios');
         } else {
             set_flash('error', api_error_message($resp));
-            header('Location: ' . BASEURL . '/usuarios.php?form=novo');
+            header('Location: ' . BASEURL . '/usuarios?form=novo');
         }
         exit;
     }
@@ -42,10 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $resp = api_put("/api/usuarios/{$id}", $payload);
         if ($resp['ok']) {
             set_flash('success', "Usuário \"{$payload['nome']}\" atualizado com sucesso.");
-            header('Location: ' . BASEURL . '/usuarios.php');
+            header('Location: ' . BASEURL . '/usuarios');
         } else {
             set_flash('error', api_error_message($resp));
-            header('Location: ' . BASEURL . "/usuarios.php?editar={$id}");
+            header('Location: ' . BASEURL . "/usuarios?editar={$id}");
         }
         exit;
     }
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             set_flash('error', api_error_message($resp));
         }
-        header('Location: ' . BASEURL . '/usuarios.php');
+        header('Location: ' . BASEURL . '/usuarios');
         exit;
     }
 }
@@ -86,7 +86,7 @@ if (isset($_GET['form']) && $_GET['form'] === 'novo') {
         $usuarioEdicao = $encontrado;
     } else {
         set_flash('error', 'Usuário não encontrado.');
-        header('Location: ' . BASEURL . '/usuarios.php');
+        header('Location: ' . BASEURL . '/usuarios');
         exit;
     }
 }
@@ -111,7 +111,7 @@ $euId = (int) $usuarioLogado['id'];
         <p>Configure níveis de acesso e credenciais da equipe no DataBridge.</p>
     </div>
     <?php if ($modoFormulario === null): ?>
-        <a class="btn btn-primary" href="<?= BASEURL ?>/usuarios.php?form=novo"><?= icon('plus', 'icon icon-sm') ?> Novo usuário</a>
+        <a class="btn btn-primary" href="<?= BASEURL ?>/usuarios?form=novo"><?= icon('plus', 'icon icon-sm') ?> Novo usuário</a>
     <?php endif; ?>
 </div>
 
@@ -149,7 +149,7 @@ $euId = (int) $usuarioLogado['id'];
     ?>
     <div class="card" style="max-width:520px;">
         <h2 style="margin-bottom:16px;"><?= $ehEdicao ? 'Editar usuário' : 'Novo usuário' ?></h2>
-        <form method="post" action="<?= BASEURL ?>/usuarios.php">
+        <form method="post" action="<?= BASEURL ?>/usuarios">
             <input type="hidden" name="_acao" value="<?= $ehEdicao ? 'atualizar' : 'criar' ?>">
             <?php if ($ehEdicao): ?>
                 <input type="hidden" name="id" value="<?= (int) $valores['id'] ?>">
@@ -193,7 +193,7 @@ $euId = (int) $usuarioLogado['id'];
 
             <div style="display:flex; gap:8px;">
                 <button type="submit" class="btn btn-primary"><?= $ehEdicao ? 'Salvar alterações' : 'Criar usuário' ?></button>
-                <a class="btn btn-secondary" href="<?= BASEURL ?>/usuarios.php">Cancelar</a>
+                <a class="btn btn-secondary" href="<?= BASEURL ?>/usuarios">Cancelar</a>
             </div>
         </form>
     </div>
@@ -247,9 +247,9 @@ $euId = (int) $usuarioLogado['id'];
                         <td class="text-muted"><?= $u['ultimo_acesso'] ? htmlspecialchars(date('d/m/Y H:i', strtotime($u['ultimo_acesso']))) : 'Nunca acessou' ?></td>
                         <td>
                             <div class="table-actions">
-                                <a class="icon-btn" title="Editar" href="<?= BASEURL ?>/usuarios.php?editar=<?= (int) $u['id'] ?>"><?= icon('edit') ?></a>
+                                <a class="icon-btn" title="Editar" href="<?= BASEURL ?>/usuarios?editar=<?= (int) $u['id'] ?>"><?= icon('edit') ?></a>
                                 <?php if ((int) $u['id'] !== $euId): ?>
-                                    <form method="post" action="<?= BASEURL ?>/usuarios.php" onsubmit="return confirm('Remover o usuário \'<?= htmlspecialchars($u['nome'], ENT_QUOTES) ?>\'?');">
+                                    <form method="post" action="<?= BASEURL ?>/usuarios" onsubmit="return confirm('Remover o usuário \'<?= htmlspecialchars($u['nome'], ENT_QUOTES) ?>\'?');">
                                         <input type="hidden" name="_acao" value="deletar">
                                         <input type="hidden" name="id" value="<?= (int) $u['id'] ?>">
                                         <button type="submit" class="icon-btn danger" title="Remover"><?= icon('trash') ?></button>

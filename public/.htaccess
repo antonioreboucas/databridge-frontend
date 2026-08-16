@@ -12,3 +12,28 @@
 # sozinho o subdiretório em que foi colocado (ex.: /databridge quando esta
 # pasta é copiada para htdocs/databridge), então os links funcionam tanto
 # na raiz quanto em qualquer subpasta do htdocs.
+
+# URLs limpas (sem ".php"): todo o app já gera os links sem a extensão
+# (ver includes/header.php e cada página em public/) — aqui é só o Apache
+# aprender a servir esses caminhos.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Se alguém acessar diretamente "/pagina.php", redireciona (301) pra
+    # "/pagina" — evita ter as duas URLs servindo o mesmo conteúdo.
+    # Usa THE_REQUEST (a linha da requisição original) em vez de
+    # REQUEST_URI porque REQUEST_URI já reflete a regra interna abaixo
+    # depois que ela reescreve — checar THE_REQUEST evita loop.
+    RewriteCond %{THE_REQUEST} \s/+(.*)\.php[\s?] [NC]
+    RewriteRule ^ /%1 [R=301,L]
+
+    # Serve arquivos e pastas reais normalmente (assets, etc.).
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # "/pagina" (sem extensão) -> serve "pagina.php" internamente, sem
+    # mudar a URL que aparece no navegador.
+    RewriteCond %{REQUEST_FILENAME}\.php -f
+    RewriteRule ^(.*)$ $1.php [L,QSA]
+</IfModule>

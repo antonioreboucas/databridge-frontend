@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var formData = new FormData();
         formData.append('arquivo', arquivo);
 
-        fetch((window.DATABRIDGE_BASE_URL || '') + '/upload.php?ajax=preview', { method: 'POST', body: formData })
+        fetch((window.DATABRIDGE_BASE_URL || '') + '/upload?ajax=preview', { method: 'POST', body: formData })
             .then(function (r) { return r.json().then(function (body) { return { ok: r.ok, body: body }; }); })
             .then(function (res) {
                 if (!res.ok) {
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.append('mapeamento_colunas', JSON.stringify(mapeamento));
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', (window.DATABRIDGE_BASE_URL || '') + '/upload.php?ajax=importar', true);
+        xhr.open('POST', (window.DATABRIDGE_BASE_URL || '') + '/upload?ajax=importar', true);
 
         // Progresso real só existe pro envio do arquivo (bytes indo pro servidor).
         // O processamento em si (ler o CSV, validar, gravar no banco) acontece
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
         areaResultado.appendChild(div);
         if (tipo === 'success') {
             var link = document.createElement('a');
-            link.href = '/historico-importacoes.php';
+            link.href = (window.DATABRIDGE_BASE_URL || '') + '/historico-importacoes';
             link.className = 'btn btn-secondary btn-sm';
             link.style.marginTop = '8px';
             link.textContent = 'Ver histórico de importações';

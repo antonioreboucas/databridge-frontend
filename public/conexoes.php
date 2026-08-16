@@ -44,10 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $resp = api_post('/api/conexoes', $payload);
         if ($resp['ok']) {
             set_flash('success', "Conexão \"{$payload['nome']}\" criada com sucesso.");
-            header('Location: ' . BASEURL . '/conexoes.php');
+            header('Location: ' . BASEURL . '/conexoes');
         } else {
             set_flash('error', api_error_message($resp));
-            header('Location: ' . BASEURL . '/conexoes.php?form=novo');
+            header('Location: ' . BASEURL . '/conexoes?form=novo');
         }
         exit;
     }
@@ -68,10 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $resp = api_put("/api/conexoes/{$id}", $payload);
         if ($resp['ok']) {
             set_flash('success', "Conexão \"{$payload['nome']}\" atualizada com sucesso.");
-            header('Location: ' . BASEURL . '/conexoes.php');
+            header('Location: ' . BASEURL . '/conexoes');
         } else {
             set_flash('error', api_error_message($resp));
-            header('Location: ' . BASEURL . "/conexoes.php?editar={$id}");
+            header('Location: ' . BASEURL . "/conexoes?editar={$id}");
         }
         exit;
     }
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             set_flash('error', api_error_message($resp));
         }
-        header('Location: ' . BASEURL . '/conexoes.php');
+        header('Location: ' . BASEURL . '/conexoes');
         exit;
     }
 
@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             set_flash('error', api_error_message($resp));
         }
-        header('Location: ' . BASEURL . '/conexoes.php');
+        header('Location: ' . BASEURL . '/conexoes');
         exit;
     }
 }
@@ -110,7 +110,7 @@ $conexaoEdicao = null;
 if (isset($_GET['form']) || isset($_GET['editar'])) {
     if (!$podeGerenciarConexoes) {
         set_flash('error', 'Você não tem permissão para gerenciar conexões.');
-        header('Location: ' . BASEURL . '/conexoes.php');
+        header('Location: ' . BASEURL . '/conexoes');
         exit;
     }
 }
@@ -125,7 +125,7 @@ if (isset($_GET['form']) && $_GET['form'] === 'novo') {
         $conexaoEdicao = $resp['body'];
     } else {
         set_flash('error', api_error_message($resp));
-        header('Location: ' . BASEURL . '/conexoes.php');
+        header('Location: ' . BASEURL . '/conexoes');
         exit;
     }
 }
@@ -143,7 +143,7 @@ $conexoes = ($listaResp['ok'] && is_array($listaResp['body'])) ? $listaResp['bod
         <p>Gerencie as credenciais e endereços de destino para suas importações.</p>
     </div>
     <?php if ($modoFormulario === null && $podeGerenciarConexoes): ?>
-        <a class="btn btn-primary" href="<?= BASEURL ?>/conexoes.php?form=novo"><?= icon('plus', 'icon icon-sm') ?> Nova conexão</a>
+        <a class="btn btn-primary" href="<?= BASEURL ?>/conexoes?form=novo"><?= icon('plus', 'icon icon-sm') ?> Nova conexão</a>
     <?php endif; ?>
 </div>
 
@@ -158,7 +158,7 @@ $conexoes = ($listaResp['ok'] && is_array($listaResp['body'])) ? $listaResp['bod
     ?>
     <div class="card" style="max-width:640px;">
         <h2 style="margin-bottom:16px;"><?= $ehEdicao ? 'Editar conexão' : 'Nova conexão' ?></h2>
-        <form method="post" action="<?= BASEURL ?>/conexoes.php">
+        <form method="post" action="<?= BASEURL ?>/conexoes">
             <input type="hidden" name="_acao" value="<?= $ehEdicao ? 'atualizar' : 'criar' ?>">
             <?php if ($ehEdicao): ?>
                 <input type="hidden" name="id" value="<?= (int) $valores['id'] ?>">
@@ -206,7 +206,7 @@ $conexoes = ($listaResp['ok'] && is_array($listaResp['body'])) ? $listaResp['bod
             <div style="display:flex; gap:8px;">
                 <button type="submit" class="btn btn-primary"><?= $ehEdicao ? 'Salvar alterações' : 'Criar conexão' ?></button>
                 <button type="button" id="btn-testar-conexao" class="btn btn-secondary"><?= icon('zap', 'icon icon-sm') ?> Testar conexão</button>
-                <a class="btn btn-secondary" href="<?= BASEURL ?>/conexoes.php">Cancelar</a>
+                <a class="btn btn-secondary" href="<?= BASEURL ?>/conexoes">Cancelar</a>
             </div>
             <div id="resultado-teste-conexao" style="margin-top:16px;"></div>
         </form>
@@ -253,17 +253,17 @@ $conexoes = ($listaResp['ok'] && is_array($listaResp['body'])) ? $listaResp['bod
                         </td>
                         <td>
                             <div class="table-actions">
-                                <form method="post" action="<?= BASEURL ?>/conexoes.php">
+                                <form method="post" action="<?= BASEURL ?>/conexoes">
                                     <input type="hidden" name="_acao" value="testar">
                                     <input type="hidden" name="id" value="<?= (int) $c['id'] ?>">
                                     <button type="submit" class="icon-btn" title="Testar conexão"><?= icon('zap') ?></button>
                                 </form>
                                 <?php if ($podeGerenciarConexoes): ?>
-                                    <a class="icon-btn" title="Editar" href="<?= BASEURL ?>/conexoes.php?editar=<?= (int) $c['id'] ?>"><?= icon('edit') ?></a>
+                                    <a class="icon-btn" title="Editar" href="<?= BASEURL ?>/conexoes?editar=<?= (int) $c['id'] ?>"><?= icon('edit') ?></a>
                                 <?php endif; ?>
-                                <a class="icon-btn" title="Ver schemas" href="<?= BASEURL ?>/schemas.php?conexao_id=<?= (int) $c['id'] ?>"><?= icon('table') ?></a>
+                                <a class="icon-btn" title="Ver schemas" href="<?= BASEURL ?>/schemas?conexao_id=<?= (int) $c['id'] ?>"><?= icon('table') ?></a>
                                 <?php if ($podeGerenciarConexoes): ?>
-                                    <form method="post" action="<?= BASEURL ?>/conexoes.php" onsubmit="return confirm('Remover a conexão \'<?= htmlspecialchars($c['nome'], ENT_QUOTES) ?>\'?');">
+                                    <form method="post" action="<?= BASEURL ?>/conexoes" onsubmit="return confirm('Remover a conexão \'<?= htmlspecialchars($c['nome'], ENT_QUOTES) ?>\'?');">
                                         <input type="hidden" name="_acao" value="deletar">
                                         <input type="hidden" name="id" value="<?= (int) $c['id'] ?>">
                                         <button type="submit" class="icon-btn danger" title="Remover"><?= icon('trash') ?></button>

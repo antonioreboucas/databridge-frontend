@@ -40,11 +40,11 @@ $pctErro = $totalGeral > 0 ? round($totalErro / $totalGeral * 100) : null;
         <p>Visão geral das conexões e do pipeline de importação.</p>
     </div>
     <div style="display:flex; gap:8px;">
-        <a class="btn btn-secondary" href="<?= BASEURL ?>/historico-importacoes.php">
+        <a class="btn btn-secondary" href="<?= BASEURL ?>/historico-importacoes">
             <?= icon('history', 'icon icon-sm') ?>
             Ver histórico
         </a>
-        <a class="btn btn-primary" href="<?= BASEURL ?>/upload.php">
+        <a class="btn btn-primary" href="<?= BASEURL ?>/upload">
             <?= icon('upload', 'icon icon-sm') ?>
             Nova importação manual
         </a>
@@ -90,7 +90,7 @@ $pctErro = $totalGeral > 0 ? round($totalErro / $totalGeral * 100) : null;
 <div class="card">
     <div class="section-header">
         <h2>Últimas importações</h2>
-        <a href="<?= BASEURL ?>/historico-importacoes.php" class="text-muted" style="font-size:13px; font-weight:600;">Ver tudo</a>
+        <a href="<?= BASEURL ?>/historico-importacoes" class="text-muted" style="font-size:13px; font-weight:600;">Ver tudo</a>
     </div>
     <?php if (empty($ultimasImportacoes)): ?>
         <div class="empty-state">

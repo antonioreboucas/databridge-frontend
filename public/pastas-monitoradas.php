@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (in_array($acao, ['criar', 'atualizar', 'alternar'], true) && !$podeGerenciar) {
         set_flash('error', 'Você não tem permissão para gerenciar pastas monitoradas.');
-        header('Location: ' . BASEURL . '/pastas-monitoradas.php');
+        header('Location: ' . BASEURL . '/pastas-monitoradas');
         exit;
     }
 
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             set_flash('error', api_error_message($resp));
         }
-        header('Location: ' . BASEURL . '/pastas-monitoradas.php');
+        header('Location: ' . BASEURL . '/pastas-monitoradas');
         exit;
     }
 
@@ -44,10 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $resp = api_post('/api/pastas', $payload);
             if ($resp['ok']) {
                 set_flash('success', 'Pasta monitorada criada com sucesso.');
-                header('Location: ' . BASEURL . '/pastas-monitoradas.php');
+                header('Location: ' . BASEURL . '/pastas-monitoradas');
             } else {
                 set_flash('error', api_error_message($resp));
-                header('Location: ' . BASEURL . '/pastas-monitoradas.php?form=novo');
+                header('Location: ' . BASEURL . '/pastas-monitoradas?form=novo');
             }
             exit;
         }
@@ -56,10 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $resp = api_put("/api/pastas/{$id}", $payload);
         if ($resp['ok']) {
             set_flash('success', 'Pasta monitorada atualizada com sucesso.');
-            header('Location: ' . BASEURL . '/pastas-monitoradas.php');
+            header('Location: ' . BASEURL . '/pastas-monitoradas');
         } else {
             set_flash('error', api_error_message($resp));
-            header('Location: ' . BASEURL . "/pastas-monitoradas.php?editar={$id}");
+            header('Location: ' . BASEURL . "/pastas-monitoradas?editar={$id}");
         }
         exit;
     }
@@ -71,14 +71,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$resp['ok']) {
             set_flash('error', api_error_message($resp));
         }
-        header('Location: ' . BASEURL . '/pastas-monitoradas.php');
+        header('Location: ' . BASEURL . '/pastas-monitoradas');
         exit;
     }
 
     if ($acao === 'deletar') {
         if (!$podeGerenciar) {
             set_flash('error', 'Você não tem permissão para gerenciar pastas monitoradas.');
-            header('Location: ' . BASEURL . '/pastas-monitoradas.php');
+            header('Location: ' . BASEURL . '/pastas-monitoradas');
             exit;
         }
         $id = (int) ($_POST['id'] ?? 0);
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             set_flash('error', api_error_message($resp));
         }
-        header('Location: ' . BASEURL . '/pastas-monitoradas.php');
+        header('Location: ' . BASEURL . '/pastas-monitoradas');
         exit;
     }
 }
@@ -100,7 +100,7 @@ $pastaEdicao = null;
 if (isset($_GET['form']) || isset($_GET['editar'])) {
     if (!$podeGerenciar) {
         set_flash('error', 'Você não tem permissão para gerenciar pastas monitoradas.');
-        header('Location: ' . BASEURL . '/pastas-monitoradas.php');
+        header('Location: ' . BASEURL . '/pastas-monitoradas');
         exit;
     }
 }
@@ -115,7 +115,7 @@ if (isset($_GET['form']) && $_GET['form'] === 'novo') {
         $pastaEdicao = $resp['body'];
     } else {
         set_flash('error', api_error_message($resp));
-        header('Location: ' . BASEURL . '/pastas-monitoradas.php');
+        header('Location: ' . BASEURL . '/pastas-monitoradas');
         exit;
     }
 }
@@ -143,7 +143,7 @@ $templates = ($templatesResp['ok'] && is_array($templatesResp['body'])) ? $templ
         <p>Gerencie os diretórios que o DataBridge escaneia automaticamente para novas importações.</p>
     </div>
     <?php if ($modoFormulario === null && $podeGerenciar): ?>
-        <a class="btn btn-primary" href="<?= BASEURL ?>/pastas-monitoradas.php?form=novo"><?= icon('plus', 'icon icon-sm') ?> Nova pasta monitorada</a>
+        <a class="btn btn-primary" href="<?= BASEURL ?>/pastas-monitoradas?form=novo"><?= icon('plus', 'icon icon-sm') ?> Nova pasta monitorada</a>
     <?php endif; ?>
 </div>
 
@@ -158,7 +158,7 @@ $templates = ($templatesResp['ok'] && is_array($templatesResp['body'])) ? $templ
     ?>
     <div class="card" style="max-width:640px;">
         <h2 style="margin-bottom:16px;"><?= $ehEdicao ? 'Editar pasta monitorada' : 'Nova pasta monitorada' ?></h2>
-        <form method="post" action="<?= BASEURL ?>/pastas-monitoradas.php">
+        <form method="post" action="<?= BASEURL ?>/pastas-monitoradas">
             <input type="hidden" name="_acao" value="<?= $ehEdicao ? 'atualizar' : 'criar' ?>">
             <?php if ($ehEdicao): ?>
                 <input type="hidden" name="id" value="<?= (int) $valores['id'] ?>">
@@ -222,7 +222,7 @@ $templates = ($templatesResp['ok'] && is_array($templatesResp['body'])) ? $templ
 
             <div style="display:flex; gap:8px;">
                 <button type="submit" class="btn btn-primary"><?= $ehEdicao ? 'Salvar alterações' : 'Criar pasta monitorada' ?></button>
-                <a class="btn btn-secondary" href="<?= BASEURL ?>/pastas-monitoradas.php">Cancelar</a>
+                <a class="btn btn-secondary" href="<?= BASEURL ?>/pastas-monitoradas">Cancelar</a>
             </div>
         </form>
     </div>
@@ -235,7 +235,7 @@ $templates = ($templatesResp['ok'] && is_array($templatesResp['body'])) ? $templ
             <div class="item-card__top">
                 <div class="item-card__icon"><?= icon('folder') ?></div>
                 <?php if ($podeGerenciar): ?>
-                    <form method="post" action="<?= BASEURL ?>/pastas-monitoradas.php">
+                    <form method="post" action="<?= BASEURL ?>/pastas-monitoradas">
                         <input type="hidden" name="_acao" value="alternar">
                         <input type="hidden" name="id" value="<?= (int) $p['id'] ?>">
                         <input type="hidden" name="novo_estado" value="<?= !empty($p['ativo']) ? '0' : '1' ?>">
@@ -259,18 +259,18 @@ $templates = ($templatesResp['ok'] && is_array($templatesResp['body'])) ? $templ
 
             <div class="item-card__footer">
                 <div style="display:flex; gap:8px;">
-                    <form method="post" action="<?= BASEURL ?>/pastas-monitoradas.php">
+                    <form method="post" action="<?= BASEURL ?>/pastas-monitoradas">
                         <input type="hidden" name="_acao" value="executar">
                         <input type="hidden" name="id" value="<?= (int) $p['id'] ?>">
                         <button type="submit" class="icon-btn" title="Executar agora"><?= icon('play') ?></button>
                     </form>
-                    <a class="icon-btn" title="Ver logs" href="<?= BASEURL ?>/historico-importacoes.php?pasta_id=<?= (int) $p['id'] ?>"><?= icon('history') ?></a>
+                    <a class="icon-btn" title="Ver logs" href="<?= BASEURL ?>/historico-importacoes?pasta_id=<?= (int) $p['id'] ?>"><?= icon('history') ?></a>
                     <?php if ($podeGerenciar): ?>
-                        <a class="icon-btn" title="Editar" href="<?= BASEURL ?>/pastas-monitoradas.php?editar=<?= (int) $p['id'] ?>"><?= icon('edit') ?></a>
+                        <a class="icon-btn" title="Editar" href="<?= BASEURL ?>/pastas-monitoradas?editar=<?= (int) $p['id'] ?>"><?= icon('edit') ?></a>
                     <?php endif; ?>
                 </div>
                 <?php if ($podeGerenciar): ?>
-                    <form method="post" action="<?= BASEURL ?>/pastas-monitoradas.php" onsubmit="return confirm('Remover esta pasta monitorada?');">
+                    <form method="post" action="<?= BASEURL ?>/pastas-monitoradas" onsubmit="return confirm('Remover esta pasta monitorada?');">
                         <input type="hidden" name="_acao" value="deletar">
                         <input type="hidden" name="id" value="<?= (int) $p['id'] ?>">
                         <button type="submit" class="icon-btn danger" title="Remover"><?= icon('trash') ?></button>
@@ -281,7 +281,7 @@ $templates = ($templatesResp['ok'] && is_array($templatesResp['body'])) ? $templ
     <?php endforeach; ?>
 
     <?php if ($modoFormulario === null && $podeGerenciar): ?>
-        <a class="item-card-add" href="<?= BASEURL ?>/pastas-monitoradas.php?form=novo">
+        <a class="item-card-add" href="<?= BASEURL ?>/pastas-monitoradas?form=novo">
             <?= icon('plus') ?>
             Nova pasta monitorada
         </a>

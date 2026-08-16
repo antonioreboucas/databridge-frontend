@@ -33,7 +33,7 @@ function usuario_tem_papel(string ...$papeis): bool
 function require_login(): void
 {
     if (!is_logged_in()) {
-        header('Location: ' . BASEURL . '/login.php');
+        header('Location: ' . BASEURL . '/login');
         exit;
     }
 }
